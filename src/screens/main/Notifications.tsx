@@ -69,10 +69,22 @@ const Notifications = () => {
       <View style={styles.container}>
         {/* Header */}
         <View style={styles.headerRow}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Text style={styles.backArrow}>‹</Text>
+          <TouchableOpacity 
+            onPress={() => {
+              try {
+                navigation.goBack();
+              } catch (error) {
+                // If goBack fails, try navigating to Home
+                navigation.navigate('Home' as never);
+              }
+            }} 
+            activeOpacity={0.7}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          >
+            <Text style={styles.backArrow}>←</Text>
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Notifications</Text>
+          <View style={{ width: 24 }} />
         </View>
 
         {/* Notification Card */}
@@ -127,19 +139,24 @@ const styles = StyleSheet.create({
   headerRow: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 10,
-    marginBottom: 13,
+    justifyContent: "space-between",
+    paddingVertical: 12,
+    paddingHorizontal: 18,
+    height: 60,
   },
   backArrow: {
-    fontSize: 32,
-    color: "#101C2A",
+    fontSize: 28,
+    color: "#1c1c1c",
+    fontWeight: "300",
+    lineHeight: 28,
   },
   headerTitle: {
     flex: 1,
     textAlign: "center",
     fontSize: 20,
+    fontWeight: "600",
     color: "rgba(55, 73, 87, 1)",
-    marginLeft: -32,
+    marginLeft: -24,
   },
 
   // Notification Card
@@ -185,7 +202,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
     left: 0,
-    width: 420,
+    right: 0,
+    width: "100%",
     height: 65,
     backgroundColor: "#fff",
     flexDirection: "row",

@@ -14,29 +14,46 @@ const SwipeBackWrapper: React.FC<SwipeBackWrapperProps> = ({ children }) => {
 
   const panResponder = React.useRef(
     PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onMoveShouldSetPanResponder: (_, gestureState) => Math.abs(gestureState.dx) > 5,
+      onStartShouldSetPanResponder: (evt) => {
+        // Only capture if touch starts near the left edge (first 20px)
+        // But not if it's in the top area where back buttons are (first 100px from top)
+        const touchX = evt.nativeEvent.pageX || evt.nativeEvent.locationX || 0;
+        const touchY = evt.nativeEvent.pageY || evt.nativeEvent.locationY || 0;
+        return touchX < 20 && touchY > 100;
+      },
+      onMoveShouldSetPanResponder: (evt, gestureState) => {
+        // Only respond to horizontal swipes from the left edge
+        const touchX = evt.nativeEvent.pageX || evt.nativeEvent.locationX || 0;
+        return touchX < 20 && gestureState.dx > 10 && Math.abs(gestureState.dy) < Math.abs(gestureState.dx);
+      },
+      onPanResponderGrant: () => {
+        translateX.setValue(0);
+      },
       onPanResponderMove: (_, gestureState) => {
-        if (gestureState.dx > 0) {
+        if (gestureState.dx > 0 && gestureState.dx < SCREEN_WIDTH) {
           translateX.setValue(gestureState.dx);
         }
       },
       onPanResponderRelease: (_, gestureState) => {
         if (gestureState.dx > SCREEN_WIDTH / 3) {
-          // If swipe > 1/3 of screen width, go back
           Animated.timing(translateX, {
             toValue: SCREEN_WIDTH,
             duration: 200,
             useNativeDriver: true,
-          }).start(() => navigation.goBack());
+          }).start(() => {
+            if (navigation.canGoBack()) {
+              navigation.goBack();
+            }
+            translateX.setValue(0);
+          });
         } else {
-          // Otherwise, snap back
           Animated.spring(translateX, {
             toValue: 0,
             useNativeDriver: true,
           }).start();
         }
       },
+      onPanResponderTerminationRequest: () => false,
     })
   ).current;
 

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import MenuModal from "../../components/MenuModal";
+import SwipeBackWrapper from "../../components/SwipeBackWrapper";
 
 const TAB_ICONS = [
   { key: "home", label: "Home", route: "Home", icon: require("../../../assets/icons/home.png") },
@@ -24,16 +25,24 @@ const VerifyScreen = () => {
     }
   };
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SwipeBackWrapper>
+      <SafeAreaView style={styles.safeArea}>
       {/* MAIN CONTENT */}
       <View style={styles.container}>
         {/* Header */}
         <View style={styles.headerRow}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Image 
-              source={require("../../../assets/icons/back.png")} 
-              style={styles.backArrowIcon}
-            />
+          <TouchableOpacity 
+            onPress={() => {
+              try {
+                navigation.goBack();
+              } catch (error) {
+                navigation.navigate('Home' as never);
+              }
+            }} 
+            activeOpacity={0.7}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          >
+            <Text style={styles.backArrow}>←</Text>
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Verify</Text>
           <View style={{ width: 24 }} />
@@ -72,7 +81,8 @@ const VerifyScreen = () => {
         visible={menuVisible}
         onClose={() => setMenuVisible(false)}
       />
-    </SafeAreaView>
+      </SafeAreaView>
+    </SwipeBackWrapper>
   );
 };
 
@@ -97,11 +107,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 18,
     height: 60,
   },
-  backArrowIcon: {
-    width: 20,
-    height: 20,
-    tintColor: "#1c1c1c",
-    resizeMode: "contain",
+  backArrow: {
+    fontSize: 28,
+    color: "#1c1c1c",
+    fontWeight: "300",
+    lineHeight: 28,
   },
   headerTitle: {
     flex: 1,

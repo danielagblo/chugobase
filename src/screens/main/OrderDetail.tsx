@@ -1,6 +1,7 @@
 import React from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import SwipeBackWrapper from "../../components/SwipeBackWrapper";
 
 const OrderDetail = () => {
   const navigation = useNavigation();
@@ -15,14 +16,22 @@ const OrderDetail = () => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#f6f6f6" }}>
+    <SwipeBackWrapper>
+      <SafeAreaView style={{ flex: 1, backgroundColor: "#f6f6f6" }}>
       {/* HEADER */}
       <View style={styles.headerRow}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Image 
-            source={require("../../../assets/icons/back.png")} 
-            style={styles.backArrowIcon}
-          />
+        <TouchableOpacity 
+          onPress={() => {
+            try {
+              navigation.goBack();
+            } catch (error) {
+              navigation.navigate('Home' as never);
+            }
+          }} 
+          activeOpacity={0.7}
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+        >
+          <Text style={styles.backArrow}>←</Text>
         </TouchableOpacity>
         <Text style={styles.header}>Tracking</Text>
         <View style={{ width: 24 }} />
@@ -110,7 +119,8 @@ const OrderDetail = () => {
       <TouchableOpacity style={styles.verifyBtn}  onPress={() => {(navigation as any).navigate("VerifyScreen") }}>
         <Text style={styles.verifyBtnText}>Verify</Text>
       </TouchableOpacity>
-    </View>
+      </SafeAreaView>
+    </SwipeBackWrapper>
   );
 };
 
@@ -125,11 +135,11 @@ const styles = StyleSheet.create({
     height: 60,
     backgroundColor: "#f6f6f6",
   },
-  backArrowIcon: {
-    width: 20,
-    height: 20,
-    tintColor: "#1c1c1c",
-    resizeMode: "contain",
+  backArrow: {
+    fontSize: 28,
+    color: "#1c1c1c",
+    fontWeight: "300",
+    lineHeight: 28,
   },
   header: { 
     flex: 1,

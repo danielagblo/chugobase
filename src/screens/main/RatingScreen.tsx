@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, StyleSheet, Image, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/Feather'; // or any icon set
+import SwipeBackWrapper from '../../components/SwipeBackWrapper';
 
 const RatingScreen = () => {
   const navigation = useNavigation();
@@ -9,13 +9,25 @@ const RatingScreen = () => {
   const stars = [1, 2, 3, 4, 5];
 
   return (
-    <View style={styles.container}>
+    <SwipeBackWrapper>
+      <SafeAreaView style={styles.container}>
       {/* Header */}
       <View style={styles.headerRow}>
-        <Text style={styles.headerTitle}>How’s your order?</Text>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Icon name="x" size={22} color="#111827" />
+        <TouchableOpacity 
+          onPress={() => {
+            try {
+              navigation.goBack();
+            } catch (error) {
+              navigation.navigate('Home' as never);
+            }
+          }} 
+          activeOpacity={0.7}
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+        >
+          <Text style={styles.backArrow}>←</Text>
         </TouchableOpacity>
+        <Text style={styles.headerTitle}>How's your order?</Text>
+        <View style={{ width: 24 }} />
       </View>
 
       {/* Rating */}
@@ -59,8 +71,90 @@ const RatingScreen = () => {
 
       {/* Your custom bottom nav here */}
       {/* <BottomNav /> */}
-    </View>
+      </SafeAreaView>
+    </SwipeBackWrapper>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: '#fff',
+  },
+  headerRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingVertical: 12,
+    paddingHorizontal: 18,
+    height: 60,
+  },
+  backArrow: {
+    fontSize: 28,
+    color: "#1c1c1c",
+    fontWeight: "300",
+    lineHeight: 28,
+  },
+  headerTitle: {
+    flex: 1,
+    fontSize: 20,
+    fontWeight: "600",
+    color: "rgba(55, 73, 87, 1)",
+    textAlign: "center",
+    marginLeft: -24,
+  },
+  caption: {
+    fontSize: 14,
+    color: '#6B7280',
+    marginBottom: 12,
+  },
+  starRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  sectionLabel: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#111827',
+    marginBottom: 8,
+  },
+  textArea: {
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    borderRadius: 8,
+    padding: 12,
+    minHeight: 100,
+    textAlignVertical: 'top',
+    fontSize: 14,
+    color: '#111827',
+  },
+  addPhotoRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 16,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    borderRadius: 8,
+  },
+  addPhotoText: {
+    marginLeft: 8,
+    fontSize: 14,
+    color: '#111827',
+  },
+  primaryButton: {
+    backgroundColor: '#111827',
+    paddingVertical: 14,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 24,
+  },
+  primaryButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+});
 
 export default RatingScreen;

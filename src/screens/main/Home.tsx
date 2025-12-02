@@ -55,6 +55,14 @@ const Home = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [menuVisible, setMenuVisible] = useState(false);
 
+  const handleTabPress = (tab: typeof TAB_ICONS[0]) => {
+    if (tab.key === "menu") {
+      setMenuVisible(true);
+    } else {
+      navigation.navigate(tab.route as never);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
@@ -137,8 +145,7 @@ const Home = () => {
             <TouchableOpacity
               key={tab.key}
               style={styles.tabItem}
-              // FIX: use as never for TS safety
-              onPress={() => navigation.navigate(tab.route as never)}
+              onPress={() => handleTabPress(tab)}
             >
               <Image source={tab.icon} style={styles.tabIconImg} />
               <Text style={styles.tabLabel}>{tab.label}</Text>

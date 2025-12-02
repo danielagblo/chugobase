@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, SafeAreaView } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import MenuModal from '../../components/MenuModal';
 import SwipeBackWrapper from "../../components/SwipeBackWrapper";
 
@@ -28,8 +29,8 @@ const TAB_ICONS = [
   { key: "menu", label: "Menu", route: "Menu", icon: require("../../../assets/icons/menu.png") },
 ];
 
-const Orders = ({ navigation }: { navigation: any }) => {
-
+const Orders = () => {
+  const navigation = useNavigation<any>();
   const [menuVisible, setMenuVisible] = useState(false);
 
   return (
@@ -37,10 +38,21 @@ const Orders = ({ navigation }: { navigation: any }) => {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
         <View style={styles.headerRow}>
-          <TouchableOpacity>
-            <Text style={styles.backArrow}>‹</Text>
+          <TouchableOpacity 
+            onPress={() => {
+              try {
+                navigation.goBack();
+              } catch (error) {
+                navigation.navigate('Home' as never);
+              }
+            }} 
+            activeOpacity={0.7}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          >
+            <Text style={styles.backArrow}>←</Text>
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Chugo orders</Text>
+          <View style={{ width: 24 }} />
         </View>
         <Text style={styles.sectionTitle}>My</Text>
         <Text style={styles.sectionSubtitle}>Chugo orders</Text>
@@ -102,10 +114,10 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   backArrow: {
-    fontSize: 34,
-    color: "#101C2A",
-    marginRight: 12,
-    fontWeight: "100",
+    fontSize: 28,
+    color: "#1c1c1c",
+    fontWeight: "300",
+    lineHeight: 28,
   },
   headerTitle: {
     flex: 1,

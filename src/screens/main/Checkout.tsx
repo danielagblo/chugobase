@@ -67,11 +67,21 @@ const Checkout: React.FC = () => {
       <View style={styles.container}>
         {/* Header */}
         <View style={styles.headerRow}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Text style={styles.backArrow}>‹</Text>
+          <TouchableOpacity 
+            onPress={() => {
+              try {
+                navigation.goBack();
+              } catch (error) {
+                navigation.navigate('Home' as never);
+              }
+            }} 
+            activeOpacity={0.7}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          >
+            <Text style={styles.backArrow}>←</Text>
           </TouchableOpacity>
           <Text style={styles.payment}>Payment</Text>
-          <View style={{ width: 34 }} />
+          <View style={{ width: 24 }} />
         </View>
 
         {/* Section title */}
@@ -244,19 +254,24 @@ const styles = StyleSheet.create({
   headerRow: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 14,
     justifyContent: "space-between",
+    paddingVertical: 12,
+    paddingHorizontal: 18,
+    height: 60,
   },
   backArrow: {
-    fontSize: 20,
-    color: "rgba(20, 32, 50, 1)",
-    fontWeight: "500",
+    fontSize: 28,
+    color: "#1c1c1c",
+    fontWeight: "300",
+    lineHeight: 28,
   },
   payment: {
-    fontSize: 17,
-    color: "rgba(55, 73, 87, 1)",
+    flex: 1,
+    fontSize: 20,
     fontWeight: "400",
+    color: "rgba(55, 73, 87, 1)",
     textAlign: "center",
+    marginLeft: -24,
   },
   sectionTitle: {
     fontSize: 32,

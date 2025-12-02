@@ -8,6 +8,7 @@ import {
   SafeAreaView,
 } from "react-native";
 import { useNavigation, NavigationProp } from "@react-navigation/native";
+import SwipeBackWrapper from "../../components/SwipeBackWrapper";
 
 type RootStackParamList = {
   VerifyScreen: undefined;
@@ -19,16 +20,24 @@ const TrackingScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   
   return (
-  <SafeAreaView style={styles.safeArea}>
+    <SwipeBackWrapper>
+      <SafeAreaView style={styles.safeArea}>
     {/* MAIN CONTENT */}
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.headerRow}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Image 
-            source={require("../../../assets/icons/back.png")} 
-            style={styles.backArrowIcon}
-          />
+        <TouchableOpacity 
+          onPress={() => {
+            try {
+              navigation.goBack();
+            } catch (error) {
+              navigation.navigate('Home' as never);
+            }
+          }} 
+          activeOpacity={0.7}
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+        >
+          <Text style={styles.backArrow}>←</Text>
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Tracking</Text>
         <View style={{ width: 24 }} />
@@ -91,7 +100,7 @@ const TrackingScreen = () => {
       {/* VERIFY BUTTON */}
       <TouchableOpacity
         style={styles.verifyBtn}
-        onPress={() => {navigation.navigate("VerifyScreen"); console.log("Verify button pressed")}}
+        onPress={() => navigation.navigate("VerifyScreen")}
       >
         <Text style={styles.verifyText}>Verify</Text>
       </TouchableOpacity>
@@ -105,8 +114,9 @@ const TrackingScreen = () => {
           <Text style={styles.tabLabel}>{label}</Text>
         </TouchableOpacity>
       ))}
-    </View>
-  </SafeAreaView>
+      </View>
+      </SafeAreaView>
+    </SwipeBackWrapper>
   );
 };
 
@@ -129,11 +139,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 18,
     height: 60,
   },
-  backArrowIcon: {
-    width: 20,
-    height: 20,
-    tintColor: "#1c1c1c",
-    resizeMode: "contain",
+  backArrow: {
+    fontSize: 28,
+    color: "#1c1c1c",
+    fontWeight: "300",
+    lineHeight: 28,
   },
   headerTitle: {
     flex: 1,

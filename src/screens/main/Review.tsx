@@ -1,14 +1,30 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, SafeAreaView } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, SafeAreaView, Image } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import SwipeBackWrapper from "../../components/SwipeBackWrapper";
 
-const ReviewScreen = ({ navigation }: any) => (
-  <SwipeBackWrapper>
-  <SafeAreaView style={styles.safeArea}>
-    <View style={styles.container}>
-      <View style={styles.headerRow}>
-        <TouchableOpacity><Text style={styles.closeIcon}>×</Text></TouchableOpacity>
-      </View>
+const ReviewScreen = ({ navigation: navProp }: any) => {
+  const navigation = useNavigation();
+  
+  return (
+    <SwipeBackWrapper>
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.container}>
+          <View style={styles.headerRow}>
+            <TouchableOpacity 
+          onPress={() => {
+            try {
+              navigation.goBack();
+            } catch (error) {
+              navigation.navigate('Home' as never);
+            }
+          }} 
+          activeOpacity={0.7}
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+        >
+              <Text style={styles.backArrow}>←</Text>
+            </TouchableOpacity>
+          </View>
       <Text style={styles.orderTitle}>How’s your order?</Text>
       <Text style={styles.ratingLabel}>You’r overall rating</Text>
       <View style={styles.starsRow}>
@@ -41,10 +57,11 @@ const ReviewScreen = ({ navigation }: any) => (
           </TouchableOpacity>
         ))}
       </View>
-    </View>
-  </SafeAreaView>
-  </SwipeBackWrapper>
-);
+        </View>
+      </SafeAreaView>
+    </SwipeBackWrapper>
+  );
+};
 
 const styles = StyleSheet.create({
   // Safe area & container
@@ -63,10 +80,11 @@ const styles = StyleSheet.create({
     marginTop: 8,
     alignItems: "flex-end",
   },
-  closeIcon: {
-    fontSize: 27,
-    color: "#222B45",
-    fontWeight: "700",
+  backArrow: {
+    fontSize: 28,
+    color: "#1c1c1c",
+    fontWeight: "300",
+    lineHeight: 28,
   },
   orderTitle: {
     fontSize: 19,

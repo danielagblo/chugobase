@@ -1,8 +1,6 @@
-// FoodMapScreen.js
-// React Native screen with a map background placeholder and a bottom sheet restaurant UI
-// No Expo-specific APIs used.
+// FoodMapScreen.js (FULL FILE READY TO PASTE)
 
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -12,10 +10,20 @@ import {
   TouchableOpacity,
   StatusBar,
   SafeAreaView,
-  ScrollView,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import MenuModal from '../../components/MenuModal';
+import SwipeBackWrapper from '../../components/SwipeBackWrapper';
+
+type RootStackParamList = {
+  Home: undefined;
+  Notifications: undefined;
+  Checkout: undefined;
+  Orders: undefined;
+  Menu: undefined;
+  FilterScreen: undefined;
+};
 
 type OfferItem = {
   id: string;
@@ -45,51 +53,77 @@ const OFFERS: OfferItem[] = [
   },
 ];
 
+const TAB_ICONS = [
+  { key: "home", label: "Home", route: "Home", icon: require("../../../assets/icons/home.png") },
+  { key: "notifications", label: "Notification", route: "Notifications", icon: require("../../../assets/icons/notification.png") },
+  { key: "checkout", label: "Checkout", route: "Checkout", icon: require("../../../assets/icons/checkout.png") },
+  { key: "orders", label: "Orders", route: "Orders", icon: require("../../../assets/icons/orders.png") },
+  { key: "menu", label: "Menu", route: "Menu", icon: require("../../../assets/icons/menu.png") },
+];
+
 const FilterScreen = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const [menuVisible, setMenuVisible] = useState(false);
+
+  const handleTabPress = (tab: typeof TAB_ICONS[0]) => {
+    if (tab.key === "menu") {
+      setMenuVisible(true);
+    } else {
+      navigation.navigate(tab.route as never);
+    }
+  };
 
   const renderOffer = ({ item }: { item: OfferItem }) => (
-    <TouchableOpacity style={styles.card} activeOpacity={0.8}>
-      <View style={styles.cardImageWrapper}>
-        <Image source={item.image} style={styles.cardImage} resizeMode="cover" />
-        <View style={styles.badgeHot}>
+    <TouchableOpacity style={styles.offerWrapper} activeOpacity={0.9}>
+      <View style={styles.offerCard}>
+        <Image source={item.image} style={styles.offerImage} />
+
+        <View style={styles.fireBadge}>
           <Icon name="flame" size={14} color="#ff6b00" />
         </View>
-      </View>
-      <Text style={styles.cardTitle} numberOfLines={1}>
-        {item.title}
-      </Text>
-      <Text style={styles.cardLocation}>• {item.location}</Text>
-      <View style={styles.priceRow}>
-        <Text style={styles.price}>{item.price}</Text>
-        <Text style={styles.oldPrice}>{item.oldPrice}</Text>
+
+        <Text style={styles.offerTitle}>{item.title}</Text>
+        <Text style={styles.offerLocation}>• {item.location}</Text>
+
+        <View style={styles.offerPriceRow}>
+          <Text style={styles.offerPrice}>{item.price}</Text>
+          <Text style={styles.offerOldPrice}>{item.oldPrice}</Text>
+        </View>
       </View>
     </TouchableOpacity>
   );
 
   return (
-    <SafeAreaView style={styles.root}>
-      <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
+    <SwipeBackWrapper>
+      <SafeAreaView style={styles.root}>
+        <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
 
-      {/* Back button */}
-      <View style={styles.backButtonContainer}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Image 
-            source={require("../../../assets/icons/back.png")} 
-            style={styles.backButton}
-          />
-        </TouchableOpacity>
-      </View>
+        {/* Back button */}
+        <View style={styles.backButtonContainer}>
+          <TouchableOpacity 
+            onPress={() => {
+              try {
+                navigation.goBack();
+              } catch (error) {
+                // If goBack fails, try navigating to Home
+                navigation.navigate('Home' as never);
+              }
+            }} 
+            activeOpacity={0.7}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          >
+            <Text style={styles.backArrow}>←</Text>
+          </TouchableOpacity>
+        </View>
 
-      {/* Map background placeholder.
-         Replace this View later with your real map (e.g. <MapView ... />). */}
+      {/* Map placeholder */}
       <View style={styles.mapPlaceholder}>
         <Text style={styles.mapText}>MAP GOES HERE</Text>
       </View>
 
       {/* Bottom sheet */}
       <View style={styles.bottomSheet}>
-        {/* Header - Dark Blue Section */}
+        {/* Header */}
         <View style={styles.headerSection}>
           <View style={styles.headerRow}>
             <View style={styles.headerLeft}>
@@ -103,6 +137,7 @@ const FilterScreen = () => {
                 <Text style={styles.restaurantName} numberOfLines={1}>
                   Chickenman pizzaman
                 </Text>
+
                 <View style={styles.ratingRow}>
                   <View style={styles.ratingBadge}>
                     <Text style={styles.ratingStar}>★</Text>
@@ -117,17 +152,16 @@ const FilterScreen = () => {
                 <Icon name="arrow-forward" size={14} color="#fff" />
                 <Text style={styles.directionText}>Direction</Text>
               </TouchableOpacity>
+
               <Text style={styles.closingText}>Closing 12:30 AM</Text>
             </View>
           </View>
         </View>
 
-        {/* Body - Light Gray Section */}
+        {/* Body */}
         <View style={styles.bodySection}>
-          {/* Offers title */}
           <Text style={styles.sectionTitle}>Chugo's offers</Text>
 
-          {/* Offers list */}
           <FlatList
             horizontal
             data={OFFERS}
@@ -137,7 +171,7 @@ const FilterScreen = () => {
             contentContainerStyle={styles.offersList}
           />
 
-          {/* Pagination dots */}
+          {/* Pagination */}
           <View style={styles.paginationDots}>
             <View style={styles.dot} />
             <View style={[styles.dot, styles.dotActive]} />
@@ -145,7 +179,28 @@ const FilterScreen = () => {
           </View>
         </View>
       </View>
-    </SafeAreaView>
+
+      {/* Bottom Navigation */}
+      <View style={styles.bottomNav}>
+        {TAB_ICONS.map((tab) => (
+          <TouchableOpacity
+            key={tab.key}
+            style={styles.tabItem}
+            onPress={() => handleTabPress(tab)}
+          >
+            <Image source={tab.icon} style={styles.tabIconImg} />
+            <Text style={styles.tabLabel}>{tab.label}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+
+      {/* Menu Modal */}
+      <MenuModal
+        visible={menuVisible}
+        onClose={() => setMenuVisible(false)}
+      />
+      </SafeAreaView>
+    </SwipeBackWrapper>
   );
 };
 
@@ -154,18 +209,20 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#ffffff',
   },
+
   backButtonContainer: {
     position: 'absolute',
     top: 50,
     left: 16,
     zIndex: 10,
   },
-  backButton: {
-    width: 20,
-    height: 20,
-    tintColor: '#000000',
-    resizeMode: 'contain',
+  backArrow: {
+    fontSize: 28,
+    color: "#000",
+    fontWeight: "300",
+    lineHeight: 28,
   },
+
   mapPlaceholder: {
     flex: 1,
     backgroundColor: '#e5e7eb',
@@ -177,11 +234,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
   },
+
   bottomSheet: {
     position: 'absolute',
     left: 0,
     right: 0,
-    bottom: 0,
+    bottom: 70,
     borderTopLeftRadius: 32,
     borderTopRightRadius: 32,
     overflow: 'hidden',
@@ -190,13 +248,16 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: -3 },
     shadowOpacity: 0.15,
     shadowRadius: 8,
+    maxHeight: '60%',
   },
+
   headerSection: {
     backgroundColor: '#101C2A',
     paddingTop: 20,
     paddingHorizontal: 16,
     paddingBottom: 16,
   },
+
   headerRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -240,6 +301,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '600',
   },
+
   headerRight: {
     alignItems: 'flex-end',
     marginLeft: 12,
@@ -257,18 +319,17 @@ const styles = StyleSheet.create({
     color: '#fff',
     marginLeft: 4,
     fontSize: 12,
-    fontWeight: '600',
   },
   closingText: {
     fontSize: 12,
-    color: '#ffffff',
-    fontWeight: '400',
+    color: '#fff',
   },
+
   bodySection: {
     backgroundColor: '#F7F8FA',
     paddingTop: 20,
     paddingHorizontal: 16,
-    paddingBottom: 20,
+    paddingBottom: 16,
   },
   sectionTitle: {
     fontSize: 18,
@@ -277,66 +338,73 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 16,
   },
+
   offersList: {
     paddingVertical: 8,
   },
-  card: {
-    width: 150,
-    backgroundColor: '#ffffff',
-    borderRadius: 16,
+
+  // --- EXACT OFFER CARD UI ---
+  offerWrapper: {
+    width: 180,
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 18,
+  },
+  offerCard: {
+    width: 170,
+    backgroundColor: "#ffffff",
+    borderRadius: 22,
     padding: 12,
-    marginRight: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.12,
+    shadowRadius: 8,
+    elevation: 6,
+    position: "relative",
+  },
+  offerImage: {
+    width: "100%",
+    height: 120,
+    borderRadius: 16,
+  },
+  fireBadge: {
+    position: "absolute",
+    top: 14,
+    right: 14,
+    backgroundColor: "#fff",
+    padding: 5,
+    borderRadius: 14,
     elevation: 3,
   },
-  cardImageWrapper: {
-    borderRadius: 12,
-    overflow: 'hidden',
-    marginBottom: 10,
-    position: 'relative',
+  offerTitle: {
+    fontSize: 15,
+    fontWeight: "700",
+    color: "#1A1D26",
+    marginTop: 12,
   },
-  cardImage: {
-    width: '100%',
-    height: 100,
-    borderRadius: 12,
-  },
-  badgeHot: {
-    position: 'absolute',
-    top: 8,
-    right: 8,
-    padding: 4,
-    backgroundColor: '#ffffff',
-    borderRadius: 12,
-  },
-  cardTitle: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#222B45',
-    marginBottom: 4,
-  },
-  cardLocation: {
+  offerLocation: {
     fontSize: 12,
-    color: '#949CA6',
-    marginBottom: 8,
+    color: "#A0A4AC",
+    marginTop: 3,
   },
-  priceRow: {
-    flexDirection: 'column',
-    alignItems: 'flex-start',
+  offerPriceRow: {
+    width: "100%",
+    marginTop: 10,
+    alignItems: "flex-start",
   },
-  price: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#222B45',
-    marginBottom: 2,
+  offerPrice: {
+    fontSize: 17,
+    fontWeight: "800",
+    color: "#1A1D26",
   },
-  oldPrice: {
+  offerOldPrice: {
     fontSize: 12,
-    color: '#949CA6',
-    textDecorationLine: 'line-through',
+    color: "#A0A4AC",
+    textDecorationLine: "line-through",
+    marginTop: -2,
   },
+
   paginationDots: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -353,6 +421,38 @@ const styles = StyleSheet.create({
   dotActive: {
     backgroundColor: '#10b981',
     width: 24,
+  },
+
+  bottomNav: {
+    width: "100%",
+    height: 65,
+    backgroundColor: "#f6f6f6",
+    flexDirection: "row",
+    borderTopWidth: 1,
+    borderColor: "#F2F3F7",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 0,
+    alignSelf: "center",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
+  tabItem: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  tabLabel: {
+    fontSize: 11,
+    color: "#949CA6",
+  },
+  tabIconImg: {
+    width: 25,
+    height: 25,
+    marginBottom: 3,
+    resizeMode: "contain",
   },
 });
 
