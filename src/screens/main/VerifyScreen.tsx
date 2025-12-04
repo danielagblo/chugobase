@@ -5,6 +5,8 @@ import MenuModal from "../../components/MenuModal";
 import SwipeBackWrapper from "../../components/SwipeBackWrapper";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
+const SCAN_BUTTON_WIDTH = 391;
+const SCAN_BUTTON_LEFT = (SCREEN_WIDTH - SCAN_BUTTON_WIDTH) / 2;
 
 const TAB_ICONS = [
   { key: "home", label: "Home", route: "Home", icon: require("../../../assets/icons/home.png") },
@@ -60,12 +62,12 @@ const VerifyScreen = () => {
             <View style={styles.cornerBR} />
           </View>
         </View>
-        
-        {/* Scan button - positioned above nav bar */}
-        <TouchableOpacity style={styles.scanBtn}>
-          <Text style={styles.scanText}>Scan</Text>
-        </TouchableOpacity>
       </View>
+
+      {/* Scan button - positioned above nav bar */}
+      <TouchableOpacity style={styles.scanBtn}>
+        <Text style={styles.scanText}>Scan</Text>
+      </TouchableOpacity>
 
       {/* BOTTOM NAV */}
       <View style={styles.bottomNav}>
@@ -127,9 +129,10 @@ const styles = StyleSheet.create({
 
   scanWrapper: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
     paddingHorizontal: 20,
+    paddingTop: 60,
   },
   scanArea: {
     width: 280,
@@ -140,52 +143,52 @@ const styles = StyleSheet.create({
   },
   cornerTL: {
     position: "absolute",
-    top: -2,
-    left: -2,
-    width: 100,
-    height: 100,
-    borderTopWidth: 5,
-    borderLeftWidth: 5,
-    borderTopLeftRadius: 24,
+    top: 0,
+    left: 0,
+    width: 80,
+    height: 80,
+    borderTopWidth: 4,
+    borderLeftWidth: 4,
+    borderTopLeftRadius: 20,
     borderColor: "#101C2A",
     borderBottomWidth: 0,
     borderRightWidth: 0,
   },
   cornerTR: {
     position: "absolute",
-    top: -2,
-    right: -2,
-    width: 100,
-    height: 100,
-    borderTopWidth: 5,
-    borderRightWidth: 5,
-    borderTopRightRadius: 24,
+    top: 0,
+    right: 0,
+    width: 80,
+    height: 80,
+    borderTopWidth: 4,
+    borderRightWidth: 4,
+    borderTopRightRadius: 20,
     borderColor: "#101C2A",
     borderBottomWidth: 0,
     borderLeftWidth: 0,
   },
   cornerBL: {
     position: "absolute",
-    bottom: -2,
-    left: -2,
-    width: 100,
-    height: 100,
-    borderBottomWidth: 5,
-    borderLeftWidth: 5,
-    borderBottomLeftRadius: 24,
+    bottom: 0,
+    left: 0,
+    width: 80,
+    height: 80,
+    borderBottomWidth: 4,
+    borderLeftWidth: 4,
+    borderBottomLeftRadius: 20,
     borderColor: "#101C2A",
     borderTopWidth: 0,
     borderRightWidth: 0,
   },
   cornerBR: {
     position: "absolute",
-    bottom: -2,
-    right: -2,
-    width: 100,
-    height: 100,
-    borderBottomWidth: 5,
-    borderRightWidth: 5,
-    borderBottomRightRadius: 24,
+    bottom: 0,
+    right: 0,
+    width: 80,
+    height: 80,
+    borderBottomWidth: 4,
+    borderRightWidth: 4,
+    borderBottomRightRadius: 20,
     borderColor: "#101C2A",
     borderTopWidth: 0,
     borderLeftWidth: 0,
@@ -193,15 +196,14 @@ const styles = StyleSheet.create({
 
   scanBtn: {
     position: "absolute",
-    bottom: 88,
-    width: 391,
-    height: 68,
+    bottom: 70,
+    left: SCAN_BUTTON_LEFT,
+    width: SCAN_BUTTON_WIDTH,
+    height: 66,
     backgroundColor: "#101C2A",
     borderRadius: 100,
     alignItems: "center",
     justifyContent: "center",
-    alignSelf: "center",
-    maxWidth: SCREEN_WIDTH - 28,
   },
   scanText: {
     color: "#FFFFFF",
@@ -211,15 +213,15 @@ const styles = StyleSheet.create({
 
   bottomNav: {
     width: "100%",
-    height: 70,
-    backgroundColor: "#F7F8FA",
+    height: 65,
+    backgroundColor: "#f6f6f6",
     flexDirection: "row",
-    borderTopWidth: 0,
+    borderTopWidth: 1,
+    borderColor: "#F2F3F7",
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 0,
-    paddingBottom: 10,
-    paddingTop: 8,
+    alignSelf: "center",
   },
   tabItem: {
     flex: 1,
@@ -228,14 +230,12 @@ const styles = StyleSheet.create({
   },
   tabLabel: {
     fontSize: 11,
-    color: "#101C2A",
-    fontWeight: "500",
-    marginTop: 4,
+    color: "#949CA6",
   },
   tabIconImg: {
-    width: 24,
-    height: 24,
+    width: 25,
+    height: 25,
+    marginBottom: 3,
     resizeMode: "contain",
-    tintColor: "#101C2A",
   },
 });
