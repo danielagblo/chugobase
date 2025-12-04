@@ -91,7 +91,7 @@ const DeleteScreen: React.FC = () => {
         </ScrollView>
       </KeyboardAvoidingView>
 
-      {/* Delete Button & Bottom NavBar */}
+      {/* Delete Button */}
       <View style={styles.bottomContainer}>
         <TouchableOpacity
           style={[styles.deleteButton, !isInputValid && { opacity: 0.5 }]}
@@ -106,18 +106,6 @@ const DeleteScreen: React.FC = () => {
         >
           <Text style={styles.deleteButtonText}>Delete</Text>
         </TouchableOpacity>
-        <View style={styles.bottomNav}>
-          {TAB_ICONS.map(tab => (
-            <TouchableOpacity
-              key={tab.key}
-              style={styles.tabItem}
-              onPress={() => handleTabPress(tab.key, tab.route)}
-            >
-              <Image source={tab.icon} style={styles.tabIconImg} />
-              <Text style={styles.tabLabel}>{tab.label}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
       </View>
 
       {/* Success Popup Modal */}
@@ -143,18 +131,32 @@ const DeleteScreen: React.FC = () => {
           </View>
         </View>
       )}
-
-      {/* Menu Modal */}
-      <MenuModal
-        visible={menuVisible}
-        onClose={() => setMenuVisible(false)}
-        user={{
-          name: "Pharm A.k",
-          email: "madhu@gmail.com",
-          photo: require("../../../assets/images/avatar.png"),
-        }}
-      />
     </View>
+
+    {/* Bottom Navigation */}
+    <View style={styles.bottomNav}>
+      {TAB_ICONS.map(tab => (
+        <TouchableOpacity
+          key={tab.key}
+          style={styles.tabItem}
+          onPress={() => handleTabPress(tab.key, tab.route)}
+        >
+          <Image source={tab.icon} style={styles.tabIconImg} />
+          <Text style={styles.tabLabel}>{tab.label}</Text>
+        </TouchableOpacity>
+      ))}
+    </View>
+
+    {/* Menu Modal */}
+    <MenuModal
+      visible={menuVisible}
+      onClose={() => setMenuVisible(false)}
+      user={{
+        name: "Pharm A.k",
+        email: "madhu@gmail.com",
+        photo: require("../../../assets/images/avatar.png"),
+      }}
+    />
     </SafeAreaView>
     </SwipeBackWrapper>
   );

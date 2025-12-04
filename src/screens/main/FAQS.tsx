@@ -87,34 +87,33 @@ const FAQScreen = () => {
               )}
             </View>
           ))}
-          <View style={{ height: 70 }} />
         </ScrollView>
-
-        {/* Bottom nav */}
-        <View style={styles.bottomNav}>
-          {TAB_ICONS.map(tab => (
-            <TouchableOpacity
-              key={tab.key}
-              style={styles.tabItem}
-              onPress={() => handleTabPress(tab.key, tab.route)}
-            >
-              <Image source={tab.icon} style={styles.tabIconImg} />
-              <Text style={styles.tabLabel}>{tab.label}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-
-        {/* Menu Modal */}
-        <MenuModal
-          visible={menuVisible}
-          onClose={() => setMenuVisible(false)}
-          user={{
-            name: "Pharm A.k",
-            email: "madhu@gmail.com",
-            photo: require("../../../assets/images/avatar.png"),
-          }}
-        />
       </View>
+
+      {/* Bottom nav */}
+      <View style={styles.bottomNav}>
+        {TAB_ICONS.map(tab => (
+          <TouchableOpacity
+            key={tab.key}
+            style={styles.tabItem}
+            onPress={() => handleTabPress(tab.key, tab.route)}
+          >
+            <Image source={tab.icon} style={styles.tabIconImg} />
+            <Text style={styles.tabLabel}>{tab.label}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+
+      {/* Menu Modal */}
+      <MenuModal
+        visible={menuVisible}
+        onClose={() => setMenuVisible(false)}
+        user={{
+          name: "Pharm A.k",
+          email: "madhu@gmail.com",
+          photo: require("../../../assets/images/avatar.png"),
+        }}
+      />
     </SafeAreaView>
     </SwipeBackWrapper>
   );
