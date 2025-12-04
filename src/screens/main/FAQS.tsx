@@ -196,15 +196,16 @@ const styles = StyleSheet.create({
 
   // Bottom Navigation
   bottomNav: {
-    flexDirection: "row",
+    width: "100%",
     height: 65,
+    backgroundColor: "#f6f6f6",
+    flexDirection: "row",
     borderTopWidth: 1,
     borderColor: "#F2F3F7",
-    backgroundColor: "#f6f6f6",
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 0,
-    
+    alignSelf: "center",
   },
   tabItem: {
     flex: 1,

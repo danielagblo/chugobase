@@ -139,7 +139,7 @@ const ProfileScreen = () => {
             style={styles.tabItem}
             onPress={() => handleTabPress(tab.key, tab.route)}
           >
-            <Image source={tab.icon} style={styles.tabIcon} />
+            <Image source={tab.icon} style={styles.tabIconImg} />
             <Text style={styles.tabLabel}>{tab.label}</Text>
           </TouchableOpacity>
         ))}
@@ -268,28 +268,32 @@ const styles = StyleSheet.create({
   saveBtnText: { color: "rgba(255, 255, 255, 1)", fontWeight: "500", fontSize: 20, letterSpacing: 1, top: 3 },
 
   bottomNav: {
+    width: "100%",
+    height: 65,
+    backgroundColor: "#f6f6f6",
     flexDirection: "row",
+    borderTopWidth: 1,
+    borderColor: "#F2F3F7",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#fff",
-    paddingBottom: 13,
-    paddingTop: 6,
-    paddingHorizontal: 12,
-    borderTopLeftRadius: 19,
-    borderTopRightRadius: 19,
-    shadowColor: "#000",
-    shadowOpacity: 0.03,
-    shadowRadius: 2,
-    shadowOffset: { width: 0, height: -1 },
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 60,
+    paddingHorizontal: 0,
+    alignSelf: "center",
   },
-  tabItem: { flex: 1, alignItems: "center", justifyContent: "center" },
-  tabIcon: { width: 28, height: 28, marginBottom: 2 },
-  tabLabel: { fontSize: 11, color: "#232323" },
+  tabItem: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  tabLabel: {
+    fontSize: 11,
+    color: "#949CA6",
+  },
+  tabIconImg: {
+    width: 25,
+    height: 25,
+    marginBottom: 3,
+    resizeMode: "contain",
+  },
 });
 
 export default ProfileScreen;

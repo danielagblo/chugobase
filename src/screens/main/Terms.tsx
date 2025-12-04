@@ -76,7 +76,7 @@ const TermsScreen: React.FC = () => {
             style={styles.tabItem}
             onPress={() => handleTabPress(tab.key, tab.route)}
           >
-            <Image source={tab.icon} style={styles.tabIcon} />
+            <Image source={tab.icon} style={styles.tabIconImg} />
             <Text style={styles.tabLabel}>{tab.label}</Text>
           </TouchableOpacity>
         ))}
@@ -162,26 +162,31 @@ const styles = StyleSheet.create({
 
   // Bottom Navigation
   bottomNav: {
+    width: "100%",
+    height: 65,
+    backgroundColor: "#f6f6f6",
     flexDirection: "row",
-    height: 62,
-    backgroundColor: "#fff",
     borderTopWidth: 1,
-    borderColor: "#efefef",
+    borderColor: "#F2F3F7",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 0,
+    alignSelf: "center",
   },
   tabItem: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },
-  tabIcon: {
+  tabLabel: {
+    fontSize: 11,
+    color: "#949CA6",
+  },
+  tabIconImg: {
     width: 25,
     height: 25,
+    marginBottom: 3,
     resizeMode: "contain",
-  },
-  tabLabel: {
-    fontSize: 10,
-    color: "#222",
-    marginTop: 2,
   },
 });
 
