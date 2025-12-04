@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Platform } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Platform, KeyboardAvoidingView, ScrollView } from "react-native";
 import CheckBox from "@react-native-community/checkbox";
 import emailIcon from "../../../assets/icons/mail_icon.png";
 import lockIcon from "../../../assets/icons/password_icon.png";
@@ -11,53 +11,63 @@ const Login = ({ navigation }: any) => {
   const [agree, setAgree] = useState(false);
 
   return (
-    <View style={styles.container}>
-      {/* Top section with circle accent */}
-      <View style={styles.header}>
-        <View style={styles.circleAccent1} />
-        <View style={styles.circleAccent2} />
-        <View style={styles.circleAccent3} />
-        <Text style={styles.title}>Welcome Back!</Text>
-       
-      </View>
+    <KeyboardAvoidingView 
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
+    >
+      <ScrollView 
+        contentContainerStyle={styles.scrollContent}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Top section with circle accent */}
+        <View style={styles.header}>
+          <View style={styles.circleAccent1} />
+          <View style={styles.circleAccent2} />
+          <View style={styles.circleAccent3} />
+          <Text style={styles.title}>Welcome Back!</Text>
+         
+        </View>
 
-      {/* Registration Card */}
-      <View style={styles.card}>
-        
-        <View style={styles.inputRow}>
-        <Image source={emailIcon} style={styles.icon} />
-          <TextInput
-            placeholder="Email"
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-            style={styles.input}
-            placeholderTextColor="#7B7B7B"
-          />
+        {/* Registration Card */}
+        <View style={styles.card}>
+          
+          <View style={styles.inputRow}>
+          <Image source={emailIcon} style={styles.icon} />
+            <TextInput
+              placeholder="Email"
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+              style={styles.input}
+              placeholderTextColor="#7B7B7B"
+            />
+          </View>
+          <View style={styles.inputRow}>
+            <Image source={lockIcon} style={styles.icon} />
+            <TextInput
+              placeholder="Password"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+              style={styles.input}
+              placeholderTextColor="#7B7B7B"
+            />
+          </View>
+         
+          <TouchableOpacity style={styles.registerBtn}>
+            <Text style={styles.registerBtnText}>Login</Text>
+          </TouchableOpacity>
+            <TouchableOpacity style={styles.useBtn} onPress={() => navigation.navigate('UseOTP')}>
+            <Text style={styles.useBtnText}>Use OTP Login</Text>
+          </TouchableOpacity>
+          <Text style={styles.loginText}>
+            Don't have an account? <Text style={styles.loginLink} onPress={() => navigation.navigate('Signup')}>Register</Text>
+          </Text>
         </View>
-        <View style={styles.inputRow}>
-          <Image source={lockIcon} style={styles.icon} />
-          <TextInput
-            placeholder="Password"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-            style={styles.input}
-            placeholderTextColor="#7B7B7B"
-          />
-        </View>
-       
-        <TouchableOpacity style={styles.registerBtn}>
-          <Text style={styles.registerBtnText}>Login</Text>
-        </TouchableOpacity>
-          <TouchableOpacity style={styles.useBtn} onPress={() => navigation.navigate('UseOTP')}>
-          <Text style={styles.useBtnText}>Use OTP Login</Text>
-        </TouchableOpacity>
-        <Text style={styles.loginText}>
-          Don't have an account? <Text style={styles.loginLink}>Register</Text>
-        </Text>
-      </View>
-    </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -67,6 +77,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "rgba(8, 21, 40, 1)",
+  },
+  scrollContent: {
+    flexGrow: 1,
   },
   header: {
     height: 300,

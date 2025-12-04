@@ -124,8 +124,7 @@ const FoodDetailScreen = () => {
       <View style={styles.header}>
         <TouchableOpacity 
           onPress={() => {
-            const state = navigation.getState();
-            if (state && state.index > 0) {
+            if (navigation.canGoBack()) {
               navigation.goBack();
             } else {
               navigation.navigate('Home' as never);

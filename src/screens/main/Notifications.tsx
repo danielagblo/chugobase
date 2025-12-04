@@ -63,6 +63,14 @@ const Notifications = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [menuVisible, setMenuVisible] = useState(false);
 
+  const handleTabPress = (tab: typeof TAB_ICONS[0]) => {
+    if (tab.key === "menu") {
+      setMenuVisible(true);
+    } else {
+      navigation.navigate(tab.route as never);
+    }
+  };
+
   return (
     <SwipeBackWrapper>
     <SafeAreaView style={styles.safeArea}>
@@ -71,8 +79,7 @@ const Notifications = () => {
         <View style={styles.headerRow}>
           <TouchableOpacity 
             onPress={() => {
-              const state = navigation.getState();
-              if (state && state.index > 0) {
+              if (navigation.canGoBack()) {
                 navigation.goBack();
               } else {
                 navigation.navigate('Home' as never);
@@ -98,26 +105,24 @@ const Notifications = () => {
             <Text style={styles.closeIcon}>×</Text>
           </TouchableOpacity>
         </View>
-
-        {/* Bottom Navigation */}
-        <View style={styles.bottomNav}>
-          {TAB_ICONS.map((tab) => (
-            <TouchableOpacity
-              key={tab.key}
-              style={styles.tabItem}
-              onPress={() => navigation.navigate(tab.route)}
-            >
-              <Image source={tab.icon} style={styles.tabIconImage} />
-              <Text style={styles.tabLabel}>{tab.label}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
       </View>
 
-      {/* Menu Modal (if needed) */}
-      {menuVisible && (
-        <MenuModal visible={menuVisible} onClose={() => setMenuVisible(false)} />
-      )}
+      {/* Bottom Navigation */}
+      <View style={styles.bottomNav}>
+        {TAB_ICONS.map((tab) => (
+          <TouchableOpacity
+            key={tab.key}
+            style={styles.tabItem}
+            onPress={() => handleTabPress(tab)}
+          >
+            <Image source={tab.icon} style={styles.tabIconImg} />
+            <Text style={styles.tabLabel}>{tab.label}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+
+      {/* Menu Modal */}
+      <MenuModal visible={menuVisible} onClose={() => setMenuVisible(false)} />
     </SafeAreaView>
     </SwipeBackWrapper>
   );
@@ -199,33 +204,31 @@ const styles = StyleSheet.create({
 
   // Bottom Navigation
   bottomNav: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
     width: "100%",
     height: 65,
-    backgroundColor: "#fff",
+    backgroundColor: "#f6f6f6",
     flexDirection: "row",
     borderTopWidth: 1,
-    borderColor: "#E2E3E4",
+    borderColor: "#F2F3F7",
     justifyContent: "space-between",
     alignItems: "center",
+    paddingHorizontal: 0,
+    alignSelf: "center",
   },
   tabItem: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },
-  tabIconImage: {
-    width: 22,
-    height: 22,
-    resizeMode: "contain",
-    marginBottom: 2,
-  },
   tabLabel: {
     fontSize: 11,
     color: "#949CA6",
+  },
+  tabIconImg: {
+    width: 25,
+    height: 25,
+    marginBottom: 3,
+    resizeMode: "contain",
   },
 });
 

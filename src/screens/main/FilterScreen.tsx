@@ -98,8 +98,7 @@ const FilterScreen = () => {
         <View style={styles.backButtonContainer}>
           <TouchableOpacity 
             onPress={() => {
-              const state = navigation.getState();
-              if (state && state.index > 0) {
+              if (navigation.canGoBack()) {
                 navigation.goBack();
               } else {
                 navigation.navigate('Home' as never);
@@ -206,8 +205,8 @@ const styles = StyleSheet.create({
 
   backButtonContainer: {
     position: 'absolute',
-    top: 50,
-    left: 16,
+    top: 10,
+    left: 20,
     zIndex: 10,
   },
   backArrow: {

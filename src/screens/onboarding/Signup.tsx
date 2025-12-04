@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Platform } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Platform, KeyboardAvoidingView, ScrollView } from "react-native";
 import CheckBox from "@react-native-community/checkbox";
 
   import userIcon from "../../../assets/icons/profile.png";
@@ -17,79 +17,89 @@ const Signup = ({ navigation }: any) => {
  
 
   return (
-    <View style={styles.container}>
-      {/* Top section with circle accent */}
-      <View style={styles.header}>
-        <View style={styles.circleAccent1} />
-        <View style={styles.circleAccent2} />
-        <View style={styles.circleAccent3} />
-        <Text style={styles.title}>Register,to take{"\n"}part of this project</Text>
-        <Text style={styles.subtitle}>To help create an Eco-friendly {"\n"} environment by preventing wastage</Text>
-      </View>
+    <KeyboardAvoidingView 
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
+    >
+      <ScrollView 
+        contentContainerStyle={styles.scrollContent}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Top section with circle accent */}
+        <View style={styles.header}>
+          <View style={styles.circleAccent1} />
+          <View style={styles.circleAccent2} />
+          <View style={styles.circleAccent3} />
+          <Text style={styles.title}>Register,to take{"\n"}part of this project</Text>
+          <Text style={styles.subtitle}>To help create an Eco-friendly {"\n"} environment by preventing wastage</Text>
+        </View>
 
-      {/* Registration Card */}
-      <View style={styles.card}>
-        <View style={styles.inputRow}>
-          <Image source={userIcon} style={styles.icon} />
-          <TextInput
-            placeholder="Name"
-            value={name}
-            onChangeText={setName}
-            style={styles.input}
-            placeholderTextColor="#7B7B7B"
-          />
-        </View>
-        <View style={styles.inputRow}>
-          <Image source={phoneIcon} style={styles.icon} />
-          <TextInput
-            placeholder="Number"
-            value={number}
-            onChangeText={setNumber}
-            keyboardType="phone-pad"
-            style={styles.input}
-            placeholderTextColor="#7B7B7B"
-          />
-        </View>
-        <View style={styles.inputRow}>
-          <Image source={emailIcon} style={styles.icon} />
-          <TextInput
-            placeholder="Email"
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-            style={styles.input}
-            placeholderTextColor="#7B7B7B"
-          />
-        </View>
-        <View style={styles.inputRow}>
-            <Image source={lockIcon} style={styles.icon} />
-          <TextInput
-            placeholder="Password"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-            style={styles.input}
-            placeholderTextColor="#7B7B7B"
-          />
-        </View>
-        <View style={styles.termsRow}>
-          <CheckBox
-            value={agree}
-            onValueChange={setAgree}
-            style={Platform.OS === "ios" ? { marginRight: 7 } : {}}
-          />
-          <Text style={styles.termsText}>
-            I agree <Text style={styles.linkText}>terms</Text> and <Text style={styles.linkText}>privacy policy</Text>
+        {/* Registration Card */}
+        <View style={styles.card}>
+          <View style={styles.inputRow}>
+            <Image source={userIcon} style={styles.icon} />
+            <TextInput
+              placeholder="Name"
+              value={name}
+              onChangeText={setName}
+              style={styles.input}
+              placeholderTextColor="#7B7B7B"
+            />
+          </View>
+          <View style={styles.inputRow}>
+            <Image source={phoneIcon} style={styles.icon} />
+            <TextInput
+              placeholder="Number"
+              value={number}
+              onChangeText={setNumber}
+              keyboardType="phone-pad"
+              style={styles.input}
+              placeholderTextColor="#7B7B7B"
+            />
+          </View>
+          <View style={styles.inputRow}>
+            <Image source={emailIcon} style={styles.icon} />
+            <TextInput
+              placeholder="Email"
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+              style={styles.input}
+              placeholderTextColor="#7B7B7B"
+            />
+          </View>
+          <View style={styles.inputRow}>
+              <Image source={lockIcon} style={styles.icon} />
+            <TextInput
+              placeholder="Password"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+              style={styles.input}
+              placeholderTextColor="#7B7B7B"
+            />
+          </View>
+          <View style={styles.termsRow}>
+            <CheckBox
+              value={agree}
+              onValueChange={setAgree}
+              style={Platform.OS === "ios" ? { marginRight: 7 } : {}}
+            />
+            <Text style={styles.termsText}>
+              I agree <Text style={styles.linkText}>terms</Text> and <Text style={styles.linkText}>privacy policy</Text>
+            </Text>
+          </View>
+          <TouchableOpacity style={styles.registerBtn} onPress={() => navigation.navigate('Home' as never)}>
+            <Text style={styles.registerBtnText}>Register</Text>
+          </TouchableOpacity>
+          <Text style={styles.loginText}>
+            Already have account ? <Text style={styles.loginLink}onPress={() => navigation.navigate('Login')}>login</Text>
           </Text>
         </View>
-        <TouchableOpacity style={styles.registerBtn}>
-          <Text style={styles.registerBtnText}>Register</Text>
-        </TouchableOpacity>
-        <Text style={styles.loginText}>
-          Already have account ? <Text style={styles.loginLink}onPress={() => navigation.navigate('Login')}>login</Text>
-        </Text>
-      </View>
-    </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -99,6 +109,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "rgba(8, 21, 40, 1)",
+  },
+  scrollContent: {
+    flexGrow: 1,
   },
   header: {
     height: 300,

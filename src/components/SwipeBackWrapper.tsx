@@ -1,60 +1,101 @@
-import React from "react";
+import React, { useRef } from "react";
 import { View, Animated, PanResponder, Dimensions, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
+const SWIPE_THRESHOLD = SCREEN_WIDTH / 3;
 
 interface SwipeBackWrapperProps {
   children: React.ReactNode;
+  enabled?: boolean;
 }
 
-const SwipeBackWrapper: React.FC<SwipeBackWrapperProps> = ({ children }) => {
+const SwipeBackWrapper: React.FC<SwipeBackWrapperProps> = ({ children, enabled = true }) => {
   const navigation = useNavigation();
-  const translateX = React.useRef(new Animated.Value(0)).current;
+  const translateX = useRef(new Animated.Value(0)).current;
+  const opacity = useRef(new Animated.Value(1)).current;
 
-  const panResponder = React.useRef(
+  const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: (evt) => {
-        // Only capture if touch starts near the left edge (first 20px)
-        // But not if it's in the top area where back buttons are (first 100px from top)
+        if (!enabled) return false;
+        // Only capture if touch starts near the left edge (first 30px)
         const touchX = evt.nativeEvent.pageX || evt.nativeEvent.locationX || 0;
-        const touchY = evt.nativeEvent.pageY || evt.nativeEvent.locationY || 0;
-        return touchX < 20 && touchY > 100;
+        return touchX < 30;
       },
       onMoveShouldSetPanResponder: (evt, gestureState) => {
-        // Only respond to horizontal swipes from the left edge
+        if (!enabled) return false;
+        // Only respond to rightward horizontal swipes from the left edge
         const touchX = evt.nativeEvent.pageX || evt.nativeEvent.locationX || 0;
-        return touchX < 20 && gestureState.dx > 10 && Math.abs(gestureState.dy) < Math.abs(gestureState.dx);
+        return touchX < 30 && gestureState.dx > 15 && Math.abs(gestureState.dy) < Math.abs(gestureState.dx) * 2;
       },
       onPanResponderGrant: () => {
         translateX.setValue(0);
+        opacity.setValue(1);
       },
       onPanResponderMove: (_, gestureState) => {
         if (gestureState.dx > 0 && gestureState.dx < SCREEN_WIDTH) {
           translateX.setValue(gestureState.dx);
+          // Fade out as you swipe
+          const opacityValue = 1 - (gestureState.dx / SCREEN_WIDTH) * 0.5;
+          opacity.setValue(Math.max(0.5, opacityValue));
         }
       },
       onPanResponderRelease: (_, gestureState) => {
-        if (gestureState.dx > SCREEN_WIDTH / 3) {
-          Animated.timing(translateX, {
-            toValue: SCREEN_WIDTH,
-            duration: 200,
-            useNativeDriver: true,
-          }).start(() => {
-            const state = navigation.getState();
-            if (state && state.index > 0) {
+        if (gestureState.dx > SWIPE_THRESHOLD) {
+          // Swipe was far enough - navigate back
+          Animated.parallel([
+            Animated.timing(translateX, {
+              toValue: SCREEN_WIDTH,
+              duration: 200,
+              useNativeDriver: true,
+            }),
+            Animated.timing(opacity, {
+              toValue: 0,
+              duration: 200,
+              useNativeDriver: true,
+            }),
+          ]).start(() => {
+            // Navigate back
+            if (navigation.canGoBack()) {
               navigation.goBack();
             } else {
-              (navigation as any).navigate('Home');
+              navigation.navigate('Home' as never);
             }
+            // Reset values
             translateX.setValue(0);
+            opacity.setValue(1);
           });
         } else {
+          // Swipe wasn't far enough - spring back
+          Animated.parallel([
+            Animated.spring(translateX, {
+              toValue: 0,
+              useNativeDriver: true,
+              tension: 50,
+              friction: 8,
+            }),
+            Animated.spring(opacity, {
+              toValue: 1,
+              useNativeDriver: true,
+              tension: 50,
+              friction: 8,
+            }),
+          ]).start();
+        }
+      },
+      onPanResponderTerminate: () => {
+        // Reset if gesture is interrupted
+        Animated.parallel([
           Animated.spring(translateX, {
             toValue: 0,
             useNativeDriver: true,
-          }).start();
-        }
+          }),
+          Animated.spring(opacity, {
+            toValue: 1,
+            useNativeDriver: true,
+          }),
+        ]).start();
       },
       onPanResponderTerminationRequest: () => false,
     })
@@ -62,7 +103,13 @@ const SwipeBackWrapper: React.FC<SwipeBackWrapperProps> = ({ children }) => {
 
   return (
     <Animated.View
-      style={[styles.container, { transform: [{ translateX }] }]}
+      style={[
+        styles.container,
+        {
+          transform: [{ translateX }],
+          opacity,
+        },
+      ]}
       {...panResponder.panHandlers}
     >
       {children}
@@ -71,7 +118,10 @@ const SwipeBackWrapper: React.FC<SwipeBackWrapperProps> = ({ children }) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#fff" },
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
 });
 
 export default SwipeBackWrapper;

@@ -12,17 +12,16 @@ const ReviewScreen = ({ navigation: navProp }: any) => {
         <View style={styles.container}>
           <View style={styles.headerRow}>
             <TouchableOpacity 
-          onPress={() => {
-            const state = navigation.getState();
-            if (state && state.index > 0) {
-              navigation.goBack();
-            } else {
-              navigation.navigate('Home' as never);
-            }
-          }} 
-          activeOpacity={0.7}
-          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-        >
+              onPress={() => {
+                if (navigation.canGoBack()) {
+                  navigation.goBack();
+                } else {
+                  navigation.navigate('Home' as never);
+                }
+              }} 
+              activeOpacity={0.7}
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            >
               <Text style={styles.backArrow}>←</Text>
             </TouchableOpacity>
           </View>
