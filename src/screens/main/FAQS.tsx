@@ -123,7 +123,12 @@ const FAQScreen = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#F8F9FA",
+    backgroundColor: "rgba(246, 246, 246, 1)",
+  },
+  container: {
+    flex: 1,
+    padding: 14,
+    backgroundColor: "rgba(246, 246, 246, 1)",
   },
 
   // Header
@@ -144,10 +149,10 @@ const styles = StyleSheet.create({
   pageTitle: {
     flex: 1,
     textAlign: "center",
-    marginLeft: -24,
     fontSize: 20,
-    fontWeight: "400",
+    fontWeight: "600",
     color: "rgba(55, 73, 87, 1)",
+    marginLeft: -24,
   },
 
   // FAQ Card

@@ -10,7 +10,8 @@ const RatingScreen = () => {
 
   return (
     <SwipeBackWrapper>
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
       {/* Header */}
       <View style={styles.headerRow}>
         <TouchableOpacity 

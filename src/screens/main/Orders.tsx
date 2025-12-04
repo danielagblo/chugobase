@@ -37,6 +37,7 @@ const Orders = () => {
     <SwipeBackWrapper>
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
+        {/* Header */}
         <View style={styles.headerRow}>
           <TouchableOpacity 
             onPress={() => {
@@ -100,18 +101,24 @@ const Orders = () => {
 export default Orders;
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: "#F8F9FA" },
-  container: {
+  safeArea: {
     flex: 1,
-    paddingHorizontal: 14,
-    paddingTop: 6,
     backgroundColor: "rgba(246, 246, 246, 1)",
   },
+  container: {
+    flex: 1,
+    padding: 14,
+    backgroundColor: "rgba(246, 246, 246, 1)",
+  },
+
+  // Header
   headerRow: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 7,
-    marginTop: 8,
+    justifyContent: "space-between",
+    paddingVertical: 12,
+    paddingHorizontal: 18,
+    height: 60,
   },
   backArrow: {
     fontSize: 28,
@@ -122,11 +129,10 @@ const styles = StyleSheet.create({
   headerTitle: {
     flex: 1,
     textAlign: "center",
-    fontSize: 16,
+    fontSize: 20,
+    fontWeight: "600",
     color: "rgba(55, 73, 87, 1)",
-    fontWeight: "400",
-    marginLeft: -34, 
-    fontFamily: "Inter",
+    marginLeft: -24,
   },
   sectionTitle: {
     fontSize: 32,

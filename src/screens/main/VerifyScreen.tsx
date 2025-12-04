@@ -91,12 +91,12 @@ export default VerifyScreen;
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#F7F8FA",
+    backgroundColor: "rgba(246, 246, 246, 1)",
   },
   container: {
     flex: 1,
-    paddingTop: 10,
-    backgroundColor: "#F7F8FA",
+    padding: 14,
+    backgroundColor: "rgba(246, 246, 246, 1)",
   },
 
   headerRow: {

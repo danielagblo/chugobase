@@ -123,12 +123,12 @@ const TrackingScreen = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#F7F8FA",
+    backgroundColor: "rgba(246, 246, 246, 1)",
   },
   container: {
     flex: 1,
     padding: 14,
-    backgroundColor: "#F7F8FA",
+    backgroundColor: "rgba(246, 246, 246, 1)",
   },
 
   headerRow: {

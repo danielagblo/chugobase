@@ -92,7 +92,7 @@ const PaymentScreen: React.FC = () => {
 
   return (
     <SwipeBackWrapper>
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+      <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
         {/* Header Row */}
         <View style={styles.headerRow}>
@@ -372,10 +372,14 @@ export default PaymentScreen;
 
 // ----------- General Styles -----------
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: "rgba(246, 246, 246, 1)",
+  },
   container: { 
     flex: 1, 
-    padding: 20, 
-    backgroundColor: "#f6f6f6" 
+    padding: 14, 
+    backgroundColor: "rgba(246, 246, 246, 1)" 
   },
 
   headerRow: {

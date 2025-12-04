@@ -17,8 +17,9 @@ const OrderDetail = () => {
 
   return (
     <SwipeBackWrapper>
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#f6f6f6" }}>
-      {/* HEADER */}
+      <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+      {/* Header */}
       <View style={styles.headerRow}>
         <TouchableOpacity 
           onPress={() => {
@@ -133,7 +134,6 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 18,
     height: 60,
-    backgroundColor: "#f6f6f6",
   },
   backArrow: {
     fontSize: 28,

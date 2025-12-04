@@ -245,10 +245,13 @@ export default Checkout;
 
 // --------- Stylesheet below ----------
 const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: "rgba(246, 246, 246, 1)" },
+  safeArea: {
+    flex: 1,
+    backgroundColor: "rgba(246, 246, 246, 1)",
+  },
   container: {
     flex: 1,
-    paddingHorizontal: 14,
+    padding: 14,
     backgroundColor: "rgba(246, 246, 246, 1)",
   },
   headerRow: {
@@ -267,10 +270,10 @@ const styles = StyleSheet.create({
   },
   payment: {
     flex: 1,
-    fontSize: 20,
-    fontWeight: "400",
-    color: "rgba(55, 73, 87, 1)",
     textAlign: "center",
+    fontSize: 20,
+    fontWeight: "600",
+    color: "rgba(55, 73, 87, 1)",
     marginLeft: -24,
   },
   sectionTitle: {

@@ -10,6 +10,7 @@ const ReviewScreen = ({ navigation: navProp }: any) => {
     <SwipeBackWrapper>
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.container}>
+          {/* Header */}
           <View style={styles.headerRow}>
             <TouchableOpacity 
               onPress={() => {
@@ -24,6 +25,7 @@ const ReviewScreen = ({ navigation: navProp }: any) => {
             >
               <Text style={styles.backArrow}>←</Text>
             </TouchableOpacity>
+            <View style={{ width: 24 }} />
           </View>
       <Text style={styles.orderTitle}>How’s your order?</Text>
       <Text style={styles.ratingLabel}>You’r overall rating</Text>
@@ -77,8 +79,12 @@ const styles = StyleSheet.create({
 
   // Header
   headerRow: {
-    marginTop: 8,
-    alignItems: "flex-end",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingVertical: 12,
+    paddingHorizontal: 18,
+    height: 60,
   },
   backArrow: {
     fontSize: 28,

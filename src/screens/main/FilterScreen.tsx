@@ -93,9 +93,9 @@ const FilterScreen = () => {
     <SwipeBackWrapper>
       <SafeAreaView style={styles.root}>
         <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
-
-        {/* Back button */}
-        <View style={styles.backButtonContainer}>
+        <View style={styles.container}>
+        {/* Header */}
+        <View style={styles.headerRow}>
           <TouchableOpacity 
             onPress={() => {
               if (navigation.canGoBack()) {
@@ -109,6 +109,7 @@ const FilterScreen = () => {
           >
             <Text style={styles.backArrow}>←</Text>
           </TouchableOpacity>
+          <View style={{ width: 24 }} />
         </View>
 
       {/* Map placeholder */}
@@ -192,6 +193,7 @@ const FilterScreen = () => {
         visible={menuVisible}
         onClose={() => setMenuVisible(false)}
       />
+      </View>
       </SafeAreaView>
     </SwipeBackWrapper>
   );
@@ -202,16 +204,24 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#ffffff',
   },
+  container: {
+    flex: 1,
+    padding: 14,
+    backgroundColor: '#ffffff',
+  },
 
-  backButtonContainer: {
-    position: 'absolute',
-    top: 10,
-    left: 20,
-    zIndex: 10,
+  // Header
+  headerRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingVertical: 12,
+    paddingHorizontal: 18,
+    height: 60,
   },
   backArrow: {
     fontSize: 28,
-    color: "#000",
+    color: "#1c1c1c",
     fontWeight: "300",
     lineHeight: 28,
   },
@@ -257,11 +267,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
-  headerRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
   headerLeft: {
     flexDirection: 'row',
     alignItems: 'center',

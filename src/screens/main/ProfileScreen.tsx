@@ -36,6 +36,7 @@ const ProfileScreen = () => {
   return (
     <SwipeBackWrapper>
     <SafeAreaView style={styles.safeArea}>
+    <View style={styles.container}>
       {/* Header */}
       <View style={styles.headerRow}>
         <TouchableOpacity 
@@ -161,7 +162,15 @@ const ProfileScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: "#f8f9fa", justifyContent: "flex-start" },
+  safeArea: {
+    flex: 1,
+    backgroundColor: "rgba(246, 246, 246, 1)",
+  },
+  container: {
+    flex: 1,
+    padding: 14,
+    backgroundColor: "rgba(246, 246, 246, 1)",
+  },
 
   headerRow: {
     flexDirection: "row",
